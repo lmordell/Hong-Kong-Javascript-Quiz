@@ -2,9 +2,9 @@
 
 This is my first Javascript App. A simple quiz game about Hong Kong. It was built using Javascript and jQuery. 
 
-<ul>Version 1.0
+Version 1.0
 
-Contains 4 questions.
+<ul>Contains 4 questions.
 
 Displays the user's score at the end
 
