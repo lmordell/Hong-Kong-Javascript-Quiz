@@ -1,0 +1,48 @@
+body {
+
+	font-family: Arial, sans-serif;
+}
+
+#quizBox {
+
+	border: solid 2px;
+	height: 500px;
+	width: 500px;
+	margin: auto;
+	margin-top: 25px;
+	text-align: center;
+}
+
+h3 {
+	text-align: center;
+}
+
+.button {
+
+	border: solid 2px #DE2910;
+	background: transparent;
+	padding: 5px;
+	margin-top: 15px;
+}
+
+.button:hover {
+
+	color: #ffffff;
+	background: #DE2910;
+	-webkit-box-shadow: 0px 2px 1px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 2px 1px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
+}
+
+#welcomeButton:focus {
+
+	outline: none;
+}
+
+
+
+img {
+	height: 200px;
+	width: 300px;
+	padding-top: 30px;
+}
