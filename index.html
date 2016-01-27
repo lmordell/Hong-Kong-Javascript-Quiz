@@ -1,10 +1,37 @@
+<!--Week 6: Build a Real-World JavaScript Quiz Application
+At this juncture, you have learned enough to build a solid JavaScript web application. Don’t proceed any further until you can successfully build this application I describe below. Don’t be afraid to ask questions on Stack Overflow, and do reread sections of the book to properly understand the concepts.
+
+You are building a JavaScript quiz web application (you will use HTML and CSS as well) that will function as follows:
+
+It is a simple quiz that has radio button choices, and it will show the quiz taker his or her score upon completion.
+The quiz can show any number of questions and any number of choices.
+Tally the user’s score and display the final score on the last page. The last page will only show the score, so remove the last question.
+Use an array to store all the questions. Each question, along with its choices and correct answer, should be stored in an object. The array of questions should look similar to this (Notice that only one question is in this example array; you will add many questions):
+var allQuestions = [{question: "Who is Prime Minister of the United Kingdom?", choices: ["David Cameron", "Gordon Brown", "Winston Churchill", "Tony Blair"], correctAnswer:0}];
+Dynamically (with document.getElementById or jQuery) remove the current question and add the next question, when the user clicks the “Next” button. The Next button will be the only button to navigate this version of the quiz.
+You can ask for help in the comments below or preferably on Stack Overflow. You will likely to get a prompt and accurate answer on Stack Overflow.
+Improve Your Quiz
+You should be very comfortable with JavaScript, probably feeling like a Jedi. No, you are not. Not yet. You must keep using your newly acquired knowledge and skills as often as possible to keep learning and improving.
+
+Improve Your Quiz Application From Earlier:
+
+Add client-side data validation: make sure the user answers each question before proceeding to the next question.
+Add a “Back” button to allow the user to go back and change her answer. The user can go back up to the first question. For the questions that the user has answered already, be sure to show the radio button selected, so that the user is not forced to answer the questions again, which she has completed.
+Use jQuery to add animation (fade out the current question and fade in the next question).
+Test the quiz on IE 9, and fix any bugs. This will give you a good workout 😉
+Store the quiz questions in an external JSON file.
+Add user authentication: allow users to log in, and save their login credentials to local storage (HTML5 browser storage).
+Use cookies to remember the user, and show a “Welcome, ‘First Name'” message when the user returns to the quiz.
+
+from: http://javascriptissexy.com/how-to-learn-javascript-properly/-->
+
 <!doctype html>
 <html lang="en">
 
 <head>
 <link rel="stylesheet" href="main.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="app.js" type="text/javascript"></script>
+<script type="text/javascript" src="app.js"></script>
 <title>Javascript Hong Kong Quiz</title>
 </head>
 
@@ -24,13 +51,16 @@
 			<a href="#"><button class="button" id="welcomeButton">Click to continue</button></a>
 			<br>
 
-			<img src="hkflag.png">
+			<img src="http://hongkongflag.facts.co/hongkongflagof/HongKongFlagImage1.png">
 	</div>
 
 	<div id="questionBox">
 		<button class='button' id="submit">Submit</button>
-	</div>
+		<button class='button' id="back">Back</button>
 
+
+	</div>
+		<p class='error'>Please select an answer</p>
 
 </div>
 
