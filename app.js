@@ -13,7 +13,7 @@ var allQuestions = [{
 
   {
     question: "What food is Hong Kong famous for?",
-    choices: ["Ramen", "Dim Sum", "Pizza"],
+    choices: ["Ramen", "Dim Sum", "Pizza", "Spaghetti"],
     correctAnswer: 1
   },
 
@@ -21,113 +21,158 @@ var allQuestions = [{
     question: "What does LKF stand for?",
     choices: ["Long Kwan Fung", "Lan Kew Fan", "Lan Kwai Fong"],
     correctAnswer: 2
-  }
-];
+  }];
+  
+
 
 //Initialize the page
 $(document).ready(function() {
+
 
   //Defining element variables 
   var welcomeButton = $('#welcomeButton');
   var innerQuizBox = $('#innerQuizBox');
   var questionBox = $('#questionBox');
   var submitButton = $('#submit');
-  var tryAgain = $('#tryAgain');
+  var backButton = $('#back');
 
-  //Hide elements before quiz starts
-  questionBox.hide();
-  //Initialize the first question upon click
-  welcomeButton.click(function() {
-    innerQuizBox.hide();
-    questionBox.show();
-  });
 
-  //Defining counting variables
+    //Defining counting variables
   var maxQuestions = allQuestions.length;
   var rightAnswers = 0;
   var i = 0;
 
-  //Display the questions
-  questionBox.append("<p id='question'>" + allQuestions[i].question + "</p>");
-  questionBox.append("<div id=\"ch1\"><input type='radio' name='answers' value=0>" + allQuestions[i].choices[0] + "</div>");
-  questionBox.append("<div id=\"ch2\"><input type='radio' name='answers' value=1>" + allQuestions[i].choices[1] + "</div>");
-  questionBox.append("<div id=\"ch3\"><input type='radio' name='answers' value=2>" + allQuestions[i].choices[2] + "</div>");
-  questionBox.append(submitButton);
+  //Display questions function
+  function displayQuestions() {
 
+    questionBox.append("<p id='question'>" + allQuestions[i].question + "</p>").hide().fadeIn();
 
+    var numOfChoices = allQuestions[i].choices.length;
 
-  submitButton.click(function callback() {
+    for(var j=0; j<= numOfChoices-1; j++) {
 
-    var answer = ($('input[name="answers"]:checked').val());
-    //CHeck if the value matches the  correct answer
-    if (answer == allQuestions[i].correctAnswer) {
-      //Increase # of right answers
-      rightAnswers++;
+      var choice = allQuestions[i].choices[j];
+      questionBox.append('<div class=\"choice\"><input type=\"radio\" name=\"answers\" value=' + j + '>' + choice + "<br>" + "</div>");
+
     }
+  }
 
-    //Removes previous set of question
-    $('#question').remove(); // remove question
-    $('#ch1').remove(); // remove choice1
-    $('#ch2').remove(); // remove choice2
-    $('#ch3').remove(); // remove choice3
+  //Remove questions function
+  function removeQuestions() {
+    $('#question').fadeOut().detach(); // remove question
+    $('.choice').detach(); // remove choices
+  }
 
-    //Increases the counter and moves to the next question
-    i++
+  //Displays buttons
+  function displayButtons() {
+    questionBox.append(submitButton);
+    questionBox.append(backButton);
+  }
 
-    // if the last question hasn't been surpassed, keep appending new questions
-    if (i < maxQuestions) {
-      questionBox.append("<p id='question'>" + allQuestions[i].question + "</p>");
-      questionBox.append("<div id=\"ch1\"><input type='radio' name='answers' value=0>" + allQuestions[i].choices[0] + "</div>");
-      questionBox.append("<div id=\"ch2\"><input type='radio' name='answers' value=1>" + allQuestions[i].choices[1] + "</div>");
-      questionBox.append("<div id=\"ch3\"><input type='radio' name='answers' value=2>" + allQuestions[i].choices[2] + "</div>");
-      questionBox.append(submitButton);
-    }
-    // last question surpassed, display the final score
-    else {
-      $('#submit').remove();
-      questionBox.append("<div id=\"questionsRight\"><br>" + "<br>" + "You've got " + rightAnswers + " out of " + maxQuestions + " questions right!" + "<br>" + "</div>");
-      questionBox.append("<button id=\"tryAgain\" class=\"button\">Try Again?</button>");
+  //Removes buttons
+  function removeButtons() {
+    submitButton.remove();
+    backButton.remove();
+  }
 
-      //Score Message
-      if (rightAnswers === 4) {
-        questionBox.append("<p class=\"p\">Perfect Score!</p>");
-      } else if (rightAnswers >= 2 && rightAnswers <= 3) {
-        questionBox.append("<p class=\"p\">Not too bad!</p>");
+submitButton.click(function callback() { //Submit Button
+
+ var answer = ($('input[name="answers"]:checked').val());
+
+
+    //checks if player checked an answer
+    if(answer == undefined) {
+      $('.error').show();
       } else {
-        questionBox.append("<p class=\"p\">Yikes! You definietely need to try again!</p>");
+      $('.error').hide();
+
+      //Check if the value matches the  correct answer
+      if (answer == allQuestions[i].correctAnswer) {
+        rightAnswers++; //Increase # of right answers
+      } 
+
+      removeQuestions();  //Removes previous set of question
+
+      i++ //Increases the counter and moves to the next question
+
+      backButton.show(); //Shows the back button for next question
+
+      // if the last question hasn't been surpassed, keep appending new questions
+      if (i < maxQuestions) {
+        displayQuestions();
+        displayButtons();
       }
-    }
 
+      else { // last question surpassed, display the final score
+        removeButtons();
+        questionBox.append("<div class='msg'><br>" + "<br>" + "You've got " + rightAnswers + " out of " + maxQuestions + " questions right!" + "<br>" + "</div>").hide().fadeIn();
+        questionBox.append("<button id=\"tryAgain\" class=\"button msg\">Try Again?</button>");
 
-    //Retake the quiz
-    var tryAgain = $('#tryAgain');
+        //Score Message
+        if (rightAnswers === maxQuestions) {
+          questionBox.append("<p class='msg'>Perfect Score!</p>");
+        } else if (rightAnswers >= 2 && rightAnswers < maxQuestions) {
+          questionBox.append("<p class='msg'>Not too bad!</p>");
+        } else {
+          questionBox.append("<p class='msg'>Yikes! You definietely need to try again!</p>");
+        }
+      }
+}
+      //Retake the quiz (Try Again Button)
+      var tryAgain = $('#tryAgain');
 
-    tryAgain.click(function() {
-      //Reset counters to 0
-      i = 0;
-      rightAnswers = 0;
+      tryAgain.click(function() {
+        //Reset counters to 0
+        i = 0;
+        rightAnswers = 0;
 
-      //Remove previous content
-      tryAgain.remove();
-      $('#questionsRight').remove();
-      $('.p').remove();
+        //Remove previous content
+        tryAgain.remove();
+        $('#questionsRight').remove();
+        $('.p').remove();
+        backButton.remove();
 
-      questionBox.append("<p id='question'>" + allQuestions[i].question + "</p>");
-      questionBox.append("<div id=\"ch1\"><input type='radio' name='answers' value=0>" + allQuestions[i].choices[0] + "</div>");
-      questionBox.append("<div id=\"ch2\"><input type='radio' name='answers' value=1>" + allQuestions[i].choices[1] + "</div>");
-      questionBox.append("<div id=\"ch3\"><input type='radio' name='answers' value=2>" + allQuestions[i].choices[2] + "</div>");
-      //Recursively call the click handler function on the original click event
-      questionBox.append(submitButton.click(function() {
+        //Append first question
+        displayQuestions();
+        //Recursively call the click handler function on the original click event
+        questionBox.append(submitButton.click(function() {
         callback();
+        }));
+        
         $('#answerMessage').remove();
-      }));
-      //tryAgain button end of input
+        backButton.remove();
+        $('.msg').remove();
+      }); //tryAgain end of input
+    }); //submitButton end of input
+
+  //Back Button
+  backButton.click(function() {
+  removeQuestions();
+  i--;
+  rightAnswers--;
+  displayQuestions();
+  displayButtons();
+
+        if (i == 0) {
+          backButton.hide();
+        } else {
+          backButton.show();
+        }
+      });//End of backButton
+
+//Quiz Start
+
+    //Hide elements before quiz starts
+    questionBox.hide();
+     $('.error').hide();
+    //Initialize the first question upon click
+    welcomeButton.click(function() {
+      innerQuizBox.hide();
+      questionBox.show();
+      //Display the questions & buttons
+      displayQuestions();
+      displayButtons();
+      backButton.hide(); //Hide back button for 1st question
     });
 
-
-    //submitButton end of input
-  });
-
-
-  //End of document ready
-});
+});//End of document ready
